@@ -2,45 +2,73 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
-	"github.com/jroimartin/gocui"
+	"github.com/gdamore/tcell/v2"
+	"github.com/gdamore/tcell/v2/encoding"
+
+	"github.com/mattn/go-runewidth"
 )
 
+func emitStr(s tcell.Screen, x, y int, style tcell.Style, str string) {
+	for _, c := range str {
+		var comb []rune
+		w := runewidth.RuneWidth(c)
+		if w == 0 {
+			comb = []rune{c}
+			c = ' '
+			w = 1
+		}
+		s.SetContent(x, y, c, comb, style)
+		x += w
+	}
+}
+
+func displayHelloWorld(s tcell.Screen) {
+	w, h := s.Size()
+	s.Clear()
+	style := tcell.StyleDefault.Foreground(tcell.ColorCadetBlue.TrueColor()).Background(tcell.ColorWhite)
+	emitStr(s, w/2-7, h/2, style, "Deep Space")
+	emitStr(s, w/2-9, h/2+1, tcell.StyleDefault, "Press ESC to exit.")
+	s.Show()
+}
+
+// This program just prints "Hello, World!".  Press ESC to exit.
 func main() {
-	g, err := gocui.NewGui(gocui.OutputNormal)
-	if err != nil {
-		log.Panicln(err)
+	encoding.Register()
+
+	s, e := tcell.NewScreen()
+	if e != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", e)
+		os.Exit(1)
 	}
-	defer g.Close()
-
-	g.SetManagerFunc(layout)
-
-	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
-		log.Panicln(err)
+	if e := s.Init(); e != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", e)
+		os.Exit(1)
 	}
 
-	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
-		log.Panicln(err)
-	}
-}
+	defStyle := tcell.StyleDefault.
+		Background(tcell.ColorBlack).
+		Foreground(tcell.ColorWhite)
+	s.SetStyle(defStyle)
 
-func layout(g *gocui.Gui) error {
-	maxX, maxY := g.Size()
-	if v, err := g.SetView("hello", maxX/2-7, maxY/2, maxX/2+7, maxY/2+2); err != nil {
-		if err != gocui.ErrUnknownView {
-			return err
+	displayHelloWorld(s)
+
+	for {
+		switch ev := s.PollEvent().(type) {
+		case *tcell.EventResize:
+			s.Sync()
+			displayHelloWorld(s)
+		case *tcell.EventKey:
+			if ev.Key() == tcell.KeyEscape {
+				fmt.Println("escape key")
+				s.Fini()
+				os.Exit(0)
+			}
+			if ev.Key() == tcell.KeyBackspace2 {
+				s.Fini()
+				os.Exit(0)
+			}
 		}
-		path, err := os.Getwd()
-		if err != nil {
-			log.Println(err)
-		}
-		fmt.Fprintln(v, fmt.Sprintf("$ pwd %s", path))
 	}
-	return nil
-}
-
-func quit(g *gocui.Gui, v *gocui.View) error {
-	return gocui.ErrQuit
 }
