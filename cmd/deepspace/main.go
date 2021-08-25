@@ -36,8 +36,7 @@ func layout(g *gocui.Gui) error {
 		if err != nil {
 			log.Println(err)
 		}
-		fmt.Fprintln(v, "$ pwd")
-		fmt.Fprintln(v, path)
+		fmt.Fprintln(v, fmt.Sprintf("$ pwd %s", path))
 	}
 	return nil
 }
