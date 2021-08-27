@@ -28,7 +28,8 @@ func displayHelloWorld(s tcell.Screen) {
 	w, h := s.Size()
 	s.Clear()
 	style := tcell.StyleDefault.Foreground(tcell.ColorCadetBlue.TrueColor()).Background(tcell.ColorWhite)
-	emitStr(s, w/2-7, h/2, style, "Deep Space")
+	msg := "Deep SpaceSpaceSpaceSpaceSpaceSpaceSpace"
+	emitStr(s, w/2-(len(msg)/2), h/2, style, msg)
 	emitStr(s, w/2-9, h/2+1, tcell.StyleDefault, "Press ESC to exit.")
 	s.Show()
 }
@@ -36,7 +37,6 @@ func displayHelloWorld(s tcell.Screen) {
 // This program just prints "Hello, World!".  Press ESC to exit.
 func main() {
 	encoding.Register()
-
 	s, e := tcell.NewScreen()
 	if e != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", e)
@@ -60,6 +60,12 @@ func main() {
 			s.Sync()
 			displayHelloWorld(s)
 		case *tcell.EventKey:
+			if ev.Key() == tcell.KeyEnter {
+				fmt.Println("enter key")
+				s.Fini()
+				return
+				os.Exit(0)
+			}
 			if ev.Key() == tcell.KeyEscape {
 				fmt.Println("escape key")
 				s.Fini()

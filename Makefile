@@ -1,6 +1,6 @@
 up: run-build-docker
 
-build-run: build run
+run: build run-binary
 
 run-build-docker: linux run-docker
 
@@ -33,7 +33,7 @@ docker:
 	@echo "### Building Docker image"
 	docker build .
 
-run:
+run-binary:
 	@echo
 	@echo "### Running deepspace server"
 	./release/deepspace server

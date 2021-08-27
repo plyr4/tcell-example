@@ -1,2 +1,2 @@
 language = "go"
-run = "make build-run"
+run = "make run"
