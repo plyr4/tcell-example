@@ -1,4 +1,4 @@
-module github.com/davidvader/deep-space-go
+module github.com/davidvader/tcell-example
 
 go 1.17
 

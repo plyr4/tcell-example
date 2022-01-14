@@ -1,13 +1,9 @@
-# deep-space-go
+# tcell-example
 
-Deep Space is a reimagining of the hobby classic, written in Golang.
-
-## Demo
-
-Try it online at [replit/@davidvader/deep-space-go](https://replit.com/@davidvader/deep-space-go)
+This respository contains a [tcell](https://github.com/gdamore/tcell) example written in Go.
 
 ## Actions
 
-![deep space build workflow](https://github.com/davidvader/deep-space-go/actions/workflows/build.yml/badge.svg)
+![tcell-example build workflow](https://github.com/plyr4/tcell-example/actions/workflows/build.yml/badge.svg)
 
-Deep Space Go uses GitHub Actions to automate the CICD process for building the code and publishing the Docker image.
+tcell-example uses GitHub Actions to automate the CICD process for building the code and publishing the Docker image.

@@ -28,7 +28,7 @@ jobs:
     - name: publish
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: davidvader/deep-space-go
+        name: davidvader/tcell-example
         cache: true
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}

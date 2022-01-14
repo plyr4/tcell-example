@@ -12,22 +12,22 @@ clean:
 
 build:
 	@echo
-	@echo "### Building static release/deepspace binary"
-	go build -o release/deepspace github.com/davidvader/deep-space-go/cmd/deepspace
+	@echo "### Building static release/tcellexample binary"
+	go build -o release/tcellexample github.com/davidvader/tcell-example/cmd/tcellexample
 
 build-static-ci:
 	@echo
-	@echo "### Building CI static release/deepspace binary"
+	@echo "### Building CI static release/tcellexample binary"
 	@go build -a \
 		-ldflags '-s -w -extldflags "-static" ${LD_FLAGS}' \
-		-o release/deepspace \
-		github.com/davidvader/deep-space-go/cmd/deepspace
+		-o release/tcellexample \
+		github.com/davidvader/tcell-example/cmd/tcellexample
 
 linux:
 	@echo
-	@echo "### Building static release/deepspace binary for linux"
+	@echo "### Building static release/tcellexample binary for linux"
 	GOOS=linux CGO_ENABLED=0 \
-		go build -o release/deepspace github.com/davidvader/deep-space-go/cmd/deepspace
+		go build -o release/tcellexample github.com/davidvader/tcell-example/cmd/tcellexample
 
 docker:
 	@echo "### Building Docker image"
@@ -35,10 +35,10 @@ docker:
 
 run-binary:
 	@echo
-	@echo "### Running deepspace server"
-	./release/deepspace server
+	@echo "### Running tcellexample server"
+	./release/tcellexample server
 
 run-docker:
 	@echo
-	@echo "### Rebuilding and running deepspace docker"
+	@echo "### Rebuilding and running tcellexample docker"
 	docker-compose up --build -d
